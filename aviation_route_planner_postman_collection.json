@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "Aviation Route Planner API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Locations",
+      "item": [
+        {
+          "name": "Get All Locations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/locations"
+          }
+        },
+        {
+          "name": "Get Location by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/locations/:id"
+          }
+        },
+        {
+          "name": "Create Location",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Sample Airport\",\n    \"country\": \"Sample Country\",\n    \"city\": \"Sample City\",\n    \"locationCode\": \"SMP\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/locations"
+          }
+        },
+        {
+          "name": "Delete Location",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/locations/:id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transportations",
+      "item": [
+        {
+          "name": "Get All Transportations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/transportations"
+          }
+        },
+        {
+          "name": "Get Transportation by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/transportations/:id"
+          }
+        },
+        {
+          "name": "Create Transportation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"origin\": { \"id\": 1 },\n    \"destination\": { \"id\": 2 },\n    \"transportationType\": \"FLIGHT\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/transportations"
+          }
+        },
+        {
+          "name": "Delete Transportation",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/transportations/:id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Routes",
+      "item": [
+        {
+          "name": "Get Valid Routes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/routes?originId=1&destinationId=2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "routes"],
+              "query": [
+                {
+                  "key": "originId",
+                  "value": "1"
+                },
+                {
+                  "key": "destinationId",
+                  "value": "2"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}

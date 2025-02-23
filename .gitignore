@@ -1,0 +1,63 @@
+# Vite + React
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+target/
+build/
+out/
+bin/
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Gradle
+.gradle/
+
+# IntelliJ specific
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse specific
+.classpath
+.project
+.settings/
+.metadata/
+
+# Spring Boot
+spring-boot-*.pid
+
+# MVN
+.mvn/
