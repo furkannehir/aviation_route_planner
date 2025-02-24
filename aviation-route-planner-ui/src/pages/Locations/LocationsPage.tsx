@@ -1,7 +1,22 @@
 import { useEffect, useState } from "react";
-import { getLocations } from "../../api/api";
+import { getLocations, createLocation, updateLocation, deleteLocation } from "../../api/api";
 import { Location } from "../../types/entities";
-import "./LocationsPage.css";
+import {
+    Container,
+    Typography,
+    TextField,
+    Button,
+    Paper,
+    Box,
+    Stack,
+    Card,
+    CardContent,
+    IconButton,
+} from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function LocationsPage() {
     const [locations, setLocations] = useState<Location[]>([]);
@@ -24,11 +39,7 @@ function LocationsPage() {
 
     const handleCreate = async () => {
         try {
-            await fetch("http://localhost:8080/api/v1/locations", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newLocation)
-            });
+            await createLocation(newLocation);
             setNewLocation({ name: "", city: "", country: "", locationCode: "" });
             loadLocations();
         } catch (error) {
@@ -36,14 +47,10 @@ function LocationsPage() {
         }
     };
 
-    const handleUpdate = async (id: number) => {
+    const handleUpdate = async () => {
         if (!editLocation) return;
         try {
-            await fetch(`http://localhost:8080/api/v1/locations/${id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(editLocation)
-            });
+            await updateLocation(editLocation);
             setEditLocation(null);
             loadLocations();
         } catch (error) {
@@ -54,9 +61,7 @@ function LocationsPage() {
     const handleDelete = async (id: number) => {
         if (!window.confirm("Are you sure you want to delete this location?")) return;
         try {
-            await fetch(`http://localhost:8080/api/v1/locations/${id}`, {
-                method: "DELETE"
-            });
+            await deleteLocation(id);
             loadLocations();
         } catch (error) {
             console.error("Failed to delete location:", error);
@@ -71,89 +76,134 @@ function LocationsPage() {
     );
 
     return (
-        <div className="locations-container">
-            <h2>Locations</h2>
-            <div className="create-block">
-                <h3>Add New Location</h3>
-                <div className="create-form">
-                    <input
-                        type="text"
-                        placeholder="Name"
+        <Container maxWidth="lg">
+            <Typography variant="h4" gutterBottom sx={{ mt: 3 }}>
+                Locations
+            </Typography>
+
+            <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                    Add New Location
+                </Typography>
+                <Stack spacing={2}>
+                    <TextField
+                        label="Name"
                         value={newLocation.name}
                         onChange={(e) => setNewLocation({ ...newLocation, name: e.target.value })}
+                        fullWidth
                     />
-                    <input
-                        type="text"
-                        placeholder="City"
+                    <TextField
+                        label="City"
                         value={newLocation.city}
                         onChange={(e) => setNewLocation({ ...newLocation, city: e.target.value })}
+                        fullWidth
                     />
-                    <input
-                        type="text"
-                        placeholder="Country"
+                    <TextField
+                        label="Country"
                         value={newLocation.country}
                         onChange={(e) => setNewLocation({ ...newLocation, country: e.target.value })}
+                        fullWidth
                     />
-                    <input
-                        type="text"
-                        placeholder="Location Code"
+                    <TextField
+                        label="Location Code"
                         value={newLocation.locationCode}
                         onChange={(e) => setNewLocation({ ...newLocation, locationCode: e.target.value })}
+                        fullWidth
                     />
-                    <button onClick={handleCreate}>Add Location</button>
-                </div>
-            </div>
-            <div className="search-box">
-                <input
-                    type="text"
-                    placeholder="Search locations..."
+                    <Button 
+                        variant="contained" 
+                        onClick={handleCreate}
+                        sx={{ mt: 2 }}
+                    >
+                        Add Location
+                    </Button>
+                </Stack>
+            </Paper>
+
+            <Box sx={{ mb: 3 }}>
+                <TextField
+                    label="Search locations..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    fullWidth
                 />
-            </div>
-            <div className="locations-list">
+            </Box>
+
+            <Stack spacing={2}>
                 {filteredLocations.map((loc) => (
-                    <div key={loc.id} className="location-item">
-                        {editLocation?.id === loc.id ? (
-                            <div className="edit-form">
-                                <input
-                                    type="text"
-                                    value={editLocation.name}
-                                    onChange={(e) => setEditLocation({ ...editLocation, name: e.target.value })}
-                                />
-                                <input
-                                    type="text"
-                                    value={editLocation.city}
-                                    onChange={(e) => setEditLocation({ ...editLocation, city: e.target.value })}
-                                />
-                                <input
-                                    type="text"
-                                    value={editLocation.country}
-                                    onChange={(e) => setEditLocation({ ...editLocation, country: e.target.value })}
-                                />
-                                <input
-                                    type="text"
-                                    value={editLocation.locationCode}
-                                    onChange={(e) => setEditLocation({ ...editLocation, locationCode: e.target.value })}
-                                />
-                                <button onClick={() => handleUpdate(loc.id)}>Save</button>
-                                <button onClick={() => setEditLocation(null)}>Cancel</button>
-                            </div>
-                        ) : (
-                            <>
-                                <div className="location-info">
-                                    {loc.name} - {loc.city}, {loc.country} ({loc.locationCode})
-                                </div>
-                                <div className="location-actions">
-                                    <button onClick={() => setEditLocation(loc)}>Edit</button>
-                                    <button onClick={() => handleDelete(loc.id)}>Delete</button>
-                                </div>
-                            </>
-                        )}
-                    </div>
+                    <Card key={loc.id}>
+                        <CardContent>
+                            {editLocation?.id === loc.id ? (
+                                <Stack spacing={2}>
+                                    <TextField
+                                        label="Name"
+                                        value={editLocation.name}
+                                        onChange={(e) => setEditLocation({ ...editLocation, name: e.target.value })}
+                                        fullWidth
+                                    />
+                                    <TextField
+                                        label="City"
+                                        value={editLocation.city}
+                                        onChange={(e) => setEditLocation({ ...editLocation, city: e.target.value })}
+                                        fullWidth
+                                    />
+                                    <TextField
+                                        label="Country"
+                                        value={editLocation.country}
+                                        onChange={(e) => setEditLocation({ ...editLocation, country: e.target.value })}
+                                        fullWidth
+                                    />
+                                    <TextField
+                                        label="Location Code"
+                                        value={editLocation.locationCode}
+                                        onChange={(e) => setEditLocation({ ...editLocation, locationCode: e.target.value })}
+                                        fullWidth
+                                    />
+                                    <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            startIcon={<SaveIcon />}
+                                            onClick={() => handleUpdate()}
+                                        >
+                                            Save
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            color="secondary"
+                                            startIcon={<CancelIcon />}
+                                            onClick={() => setEditLocation(null)}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </Box>
+                                </Stack>
+                            ) : (
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Typography>
+                                        {loc.name} - {loc.city}, {loc.country} ({loc.locationCode})
+                                    </Typography>
+                                    <Box>
+                                        <IconButton 
+                                            color="primary" 
+                                            onClick={() => setEditLocation(loc)}
+                                        >
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton 
+                                            color="error" 
+                                            onClick={() => handleDelete(loc.id)}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Box>
+                                </Box>
+                            )}
+                        </CardContent>
+                    </Card>
                 ))}
-            </div>
-        </div>
+            </Stack>
+        </Container>
     );
 }
 

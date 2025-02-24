@@ -51,17 +51,13 @@ public class TransportationController {
 
     /**
      * Update transportation by id.
-     * @param id transportation id
-     * @param transportation transportation object
+     *
+     * @param id                transportation id
+     * @param transportationDto transportation object
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Transportation> updateTransportation(@PathVariable(name = "id") Long id, @RequestBody Transportation transportation) {
-        Optional<Transportation> existingTransportation = transportationService.getTransportationById(id);
-        if (existingTransportation.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        transportation.setId(id);
-        return ResponseEntity.ok(transportationService.saveTransportation(transportation));
+    public ResponseEntity<Transportation> updateTransportation(@PathVariable(name = "id") Long id, @RequestBody TransportationDto transportationDto) {
+        return ResponseEntity.ok(transportationService.updateTransportation(transportationDto, id));
     }
 
     /**

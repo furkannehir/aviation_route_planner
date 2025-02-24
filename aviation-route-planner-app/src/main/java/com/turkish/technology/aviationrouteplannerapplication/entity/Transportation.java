@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "transportations")
@@ -28,4 +30,11 @@ public class Transportation {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TransportationType transportationType; // FLIGHT, BUS, etc.
+
+    @Column(name = "transportation_days", columnDefinition = "text[]", nullable = false)
+    private String transportationDays; // MONDAY, TUESDAY, etc.
+
+    public List<DaysOfWeek> getTransportationDays() {
+        return DaysOfWeek.fromStringList(transportationDays);
+    }
 }

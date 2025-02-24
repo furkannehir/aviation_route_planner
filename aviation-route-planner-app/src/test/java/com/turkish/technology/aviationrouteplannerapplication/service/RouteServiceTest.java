@@ -57,7 +57,7 @@ class RouteServiceTest {
         when(locationRepository.findById(2L)).thenReturn(Optional.of(destination));
         when(transportationRepository.findAll()).thenReturn(List.of(flight));
 
-        List<List<Transportation>> routes = routeService.findValidRoutes(1L, 2L);
+        List<List<Transportation>> routes = routeService.findValidRoutes(1L, 2L, "2021-12-01");
 
         assertFalse(routes.isEmpty());
         assertEquals(1, routes.size());

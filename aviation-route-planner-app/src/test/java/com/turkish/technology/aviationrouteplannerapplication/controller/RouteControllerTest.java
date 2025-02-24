@@ -55,23 +55,23 @@ class RouteControllerTest {
     void testGetRoutes_ShouldReturnValidRoutes() {
         List<List<Transportation>> mockRoutes = List.of(List.of(flight));
 
-        when(routeService.findValidRoutes(1L, 2L)).thenReturn(mockRoutes);
+        when(routeService.findValidRoutes(1L, 2L, "2021-12-01")).thenReturn(mockRoutes);
 
-        ResponseEntity<List<List<Transportation>>> response = routeController.getRoutes(1L, 2L);
+        ResponseEntity<List<List<Transportation>>> response = routeController.getRoutes(1L, 2L, "2021-12-01");
 
         assertEquals(200, response.getStatusCode().value(), "Response should be 200 OK");
         assertNotNull(response.getBody(), "Response body should not be null");
         assertEquals(1, response.getBody().size(), "There should be one route in the response");
         assertEquals(TransportationType.FLIGHT, response.getBody().get(0).get(0).getTransportationType());
 
-        verify(routeService, times(1)).findValidRoutes(1L, 2L);
+        verify(routeService, times(1)).findValidRoutes(1L, 2L, "2021-12-01");
     }
 
     @Test
     void testGetRoutes_ShouldReturnNotFound_WhenNoRoutes() {
-        when(routeService.findValidRoutes(1L, 2L)).thenReturn(List.of());
+        when(routeService.findValidRoutes(1L, 2L, "2021-12-01")).thenReturn(List.of());
 
-        ResponseEntity<List<List<Transportation>>> response = routeController.getRoutes(1L, 2L);
+        ResponseEntity<List<List<Transportation>>> response = routeController.getRoutes(1L, 2L, "2021-12-01");
 
         assertEquals(404, response.getStatusCode().value(), "Response should be 404 Not Found");
     }

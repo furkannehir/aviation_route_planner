@@ -14,6 +14,7 @@ CREATE TABLE transportations (
                                  origin_id BIGINT NOT NULL,
                                  destination_id BIGINT NOT NULL,
                                  transportation_type VARCHAR(20) NOT NULL,
+                                 transportation_days VARCHAR(100) NOT NULL,
                                  FOREIGN KEY (origin_id) REFERENCES locations(id) ON DELETE CASCADE,
                                  FOREIGN KEY (destination_id) REFERENCES locations(id) ON DELETE CASCADE
 );
@@ -42,26 +43,41 @@ INSERT INTO locations (name, country, city, location_code) VALUES
                                                                 ('Central Park', 'USA', 'New York', 'CPK');
 
 -- Insert transportations (Flights, buses, and Uber connections)
-INSERT INTO transportations (origin_id, destination_id, transportation_type) VALUES
-                                                             (1, 2, 'BUS'),  -- SAW -> IST
-                                                             (2, 1, 'BUS'),  -- IST -> SAW
-                                                             (3, 4, 'FLIGHT'),  -- Berlin -> Paris
-                                                            (4, 3, 'FLIGHT'),  -- Paris -> Berlin
-                                                            (5, 6, 'FLIGHT'),  -- Madrid -> Tokyo
-                                                            (6, 5, 'FLIGHT'),  -- Tokyo -> Madrid
-                                                            (7, 8, 'FLIGHT'),  -- Los Angeles -> Dubai
-                                                            (8, 7, 'FLIGHT'),  -- Dubai -> Los Angeles
-                                                            (9, 10, 'FLIGHT'),  -- London -> New York
-                                                            (10, 9, 'FLIGHT'),  -- New York -> London
-                                                             (2, 9, 'FLIGHT'),  -- IST -> London
-                                                             (1, 10, 'FLIGHT'),  -- SAW -> New York
-                                                            (11, 2, 'UBER'),  -- Taksim -> IST
-                                                            (12, 1, 'UBER'),  -- Kadikoy -> SAW
-                                                            (13, 3, 'BUS'),  -- Kreuzberg -> BER
-                                                            (14, 4, 'UBER'),  -- Montmartre -> CDG
-                                                            (15, 5, 'UBER'),  -- Sol -> Madrid
-                                                            (16, 6, 'UBER'),  -- Shinjuku -> Tokyo
-                                                            (17, 7, 'UBER'),  -- Hollywood -> LAX
-                                                            (18, 8, 'UBER'),  -- Burj Khalifa -> DBX
-                                                            (19, 9, 'UBER'),  -- Buckingham Palace -> London
-                                                            (20, 10, 'UBER');  -- Central Park -> JFK
+INSERT INTO transportations (origin_id, destination_id, transportation_type, transportation_days) VALUES
+                                                            (1, 2, 'BUS', 'MONDAY,TUESDAY'),  -- SAW -> IST
+                                                            (1, 10, 'FLIGHT', 'MONDAY,TUESDAY'),  -- SAW -> New York
+                                                            (1,3, 'FLIGHT', 'TUESDAY'),  -- SAW -> Berlin
+                                                            (1, 4, 'FLIGHT', 'WEDNESDAY'),  -- SAW -> Paris
+                                                            (1, 5, 'FLIGHT', 'THURSDAY'),  -- SAW -> Madrid
+                                                            (1, 6, 'FLIGHT', 'FRIDAY'),  -- SAW -> Tokyo
+                                                            (1, 7, 'FLIGHT', 'SATURDAY'),  -- SAW -> Los Angeles
+                                                            (1, 8, 'FLIGHT', 'SUNDAY'),  -- SAW -> Dubai
+                                                            (2, 1, 'BUS', 'FRIDAY,SATURDAY'),  -- IST -> SAW
+                                                            (2, 9, 'FLIGHT', 'MONDAY,FRIDAY'),  -- IST -> London
+                                                            (2, 10, 'FLIGHT', 'SATURDAY'),  -- IST -> New York
+                                                            (2, 3, 'FLIGHT', 'THURSDAY,SUNDAY'),  -- IST -> Berlin
+                                                            (2, 4, 'FLIGHT', 'MONDAY'),  -- IST -> Paris
+                                                            (2, 5, 'FLIGHT', 'TUESDAY'),  -- IST -> Madrid
+                                                            (2, 6, 'FLIGHT', 'WEDNESDAY'),  -- IST -> Tokyo
+                                                            (2, 7, 'FLIGHT', 'THURSDAY'),  -- IST -> Los Angeles
+                                                            (2, 8, 'FLIGHT', 'FRIDAY'),  -- IST -> Dubai
+                                                            (3, 1, 'FLIGHT', 'SATURDAY'),  -- Berlin -> SAW
+                                                            (3, 9, 'FLIGHT', 'SUNDAY'),  -- Berlin -> London
+                                                            (3, 4, 'FLIGHT', 'WEDNESDAY'),  -- Berlin -> Paris
+                                                            (4, 3, 'FLIGHT', 'SATURDAY,SUNDAY'),  -- Paris -> Berlin
+                                                            (5, 6, 'FLIGHT', 'FRIDAY,SATURDAY'),  -- Madrid -> Tokyo
+                                                            (6, 5, 'FLIGHT', 'TUESDAY,SATURDAY,SUNDAY'),  -- Tokyo -> Madrid
+                                                            (7, 8, 'FLIGHT', 'TUESDAY,SATURDAY'),  -- Los Angeles -> Dubai
+                                                            (8, 7, 'FLIGHT', 'SATURDAY,SUNDAY'),  -- Dubai -> Los Angeles
+                                                            (9, 10, 'FLIGHT', 'FRIDAY,SATURDAY'),  -- London -> New York
+                                                            (10, 9, 'FLIGHT', 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY'),  -- New York -> London
+                                                            (11, 2, 'UBER', 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY'),  -- Taksim -> IST
+                                                            (12, 1, 'UBER', 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY'),  -- Kadikoy -> SAW
+                                                            (13, 3, 'BUS', 'WEDNESDAY,THURSDAY'),  -- Kreuzberg -> BER
+                                                            (14, 4, 'UBER', 'MONDAY,WEDNESDAY'),  -- Montmartre -> CDG
+                                                            (15, 5, 'UBER', 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY'),  -- Sol -> Madrid
+                                                            (16, 6, 'UBER', 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY'),  -- Shinjuku -> Tokyo
+                                                            (17, 7, 'UBER', 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY'),  -- Hollywood -> LAX
+                                                            (18, 8, 'UBER', 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY'),  -- Burj Khalifa -> DBX
+                                                            (19, 9, 'UBER', 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY'),  -- Buckingham Palace -> London
+                                                            (20, 10, 'UBER', 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY');  -- Central Park -> JFK

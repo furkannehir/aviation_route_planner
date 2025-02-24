@@ -27,9 +27,10 @@ public class RouteController {
     @GetMapping
     public ResponseEntity<List<List<Transportation>>> getRoutes(
             @RequestParam(name = "originId") Long originId,
-            @RequestParam(name = "destinationId") Long destinationId) {
+            @RequestParam(name = "destinationId") Long destinationId,
+            @RequestParam(name = "date") String date) {
 
-        List<List<Transportation>> routes = routeService.findValidRoutes(originId, destinationId);
+        List<List<Transportation>> routes = routeService.findValidRoutes(originId, destinationId, date);
         if (routes.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

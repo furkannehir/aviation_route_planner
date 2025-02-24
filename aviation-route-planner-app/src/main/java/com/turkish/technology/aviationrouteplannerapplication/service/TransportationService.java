@@ -3,7 +3,6 @@ package com.turkish.technology.aviationrouteplannerapplication.service;
 import com.turkish.technology.aviationrouteplannerapplication.dto.TransportationDto;
 import com.turkish.technology.aviationrouteplannerapplication.entity.Location;
 import com.turkish.technology.aviationrouteplannerapplication.entity.Transportation;
-import com.turkish.technology.aviationrouteplannerapplication.entity.TransportationType;
 import com.turkish.technology.aviationrouteplannerapplication.repository.TransportationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,20 +31,27 @@ public class TransportationService {
     }
 
     public Transportation saveTransportationDto(TransportationDto transportationDto) {
-        Location origin = this.locationService.getLocationById(transportationDto.getOriginId()).orElseThrow();
-        Location destination = this.locationService.getLocationById(transportationDto.getDestinationId()).orElseThrow();
         Transportation transportation = new Transportation();
-        transportation.setOrigin(origin);
-        transportation.setDestination(destination);
-        transportation.setTransportationType(TransportationType.valueOf(transportationDto.getTransportationType()));
+        enrichTransportation(transportation, transportationDto);
         return transportationRepository.save(transportation);
     }
 
-    public Transportation saveTransportation(Transportation transportation) {
+    public Transportation updateTransportation(TransportationDto transportationDto, Long id) {
+        Transportation transportation = transportationRepository.findById(id).orElseThrow();
+        enrichTransportation(transportation, transportationDto);
         return transportationRepository.save(transportation);
     }
 
     public void deleteTransportation(Long id) {
         transportationRepository.deleteById(id);
+    }
+
+    private void enrichTransportation(Transportation transportation, TransportationDto transportationDto) {
+        Location origin = this.locationService.getLocationById(transportationDto.getOriginId()).orElseThrow();
+        Location destination = this.locationService.getLocationById(transportationDto.getDestinationId()).orElseThrow();
+        transportation.setOrigin(origin);
+        transportation.setDestination(destination);
+        transportation.setTransportationType(transportationDto.getTransportationType());
+        transportation.setTransportationDays(transportationDto.transportationDaysToString());
     }
 }
