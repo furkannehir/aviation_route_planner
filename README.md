@@ -46,12 +46,36 @@ An aviation route planning solution that helps users find optimal flight paths b
 
 ## Setup Instructions
 
-### Database Setup
+### Docker Setup (Recommended)
+1. Clone the repository:
+```bash
+
+git clone [repository-url]
+```
+
+2. Build and run the Docker containers:
+```bash
+
+docker-compose up --build
+```
+
+3. Access the application at `http://localhost:3000`
+4. Access the API documentation at `http://localhost:8080/swagger-ui.html`
+
+To stop the containers, run:
+```bash
+
+docker-compose down
+```
+
+### Manual Setup
+
+#### Database Setup
 ```sql
 CREATE DATABASE aviation_route_planner;
 ```
 
-### Environment Variables
+#### Environment Variables
 Create .env file in the backend root:
 ```
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/aviation_route_planner
@@ -59,14 +83,14 @@ SPRING_DATASOURCE_USERNAME=your_username
 SPRING_DATASOURCE_PASSWORD=your_password
 ```
 
-### Backend Setup
+#### Backend Setup
 ```sh
 
 cd aviation-route-planner-app
 ./mvnw spring-boot:run
 ```
 
-### Frontend Setup
+#### Frontend Setup
 ```sh
 
 cd aviation-route-planner-ui
